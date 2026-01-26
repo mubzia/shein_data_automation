@@ -1,4 +1,4 @@
-altair @ file:///home/conda/feedstock_root/build_artifacts/altair-split_1763475854573/work
+altair =5.0
 attrs @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_attrs_1764875182/work
 blinker @ file:///home/conda/feedstock_root/build_artifacts/blinker_1731096409132/work
 Brotli @ file:///D:/bld/brotli-split_1764017006836/work
@@ -48,3 +48,4 @@ watchdog @ file:///D:/bld/watchdog_1763021611967/work
 win_inet_pton @ file:///D:/bld/win_inet_pton_1733130564612/work
 xlsxwriter @ file:///home/conda/feedstock_root/build_artifacts/xlsxwriter_1760304360823/work
 zipp @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_zipp_1764460141/work
+
