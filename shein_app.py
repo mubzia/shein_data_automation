@@ -8,7 +8,7 @@ from io import BytesIO
 def subm_upload(subm_data):
     if subm_data is not None:
         region = pd.read_excel('region.xlsx')
-        subm_df = pd.read_csv(subm_data,
+        subm_df = pd.read_excel(subm_data,
                                 usecols=['Waybill No.', 'Order Type', 'Client Weight','Delivery Station',
                                          'PPD/COD','COD','Client Volume(cm³)','Create Operator',],
                                          dtype= str)
@@ -96,7 +96,7 @@ def main():
         st.markdown("### Shein Data Automation")
         col1, col2, col3 = st.columns([2,0.25,2])
         with col1:
-            subm_data = st.file_uploader("Upload Submission File(CSV format(comma delimited))", type="csv", key="submission")
+            subm_data = st.file_uploader("Upload the Submission File", type="xlsx", key="submission")
             subm_df = subm_upload(subm_data)
             filt_df = add_cols(subm_df)
             reg_total,reg_weight,reg_route,reg_size,reg_value,reg_d_method = dfs_creation(filt_df)
@@ -151,3 +151,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
