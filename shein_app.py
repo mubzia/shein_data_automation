@@ -102,20 +102,21 @@ def main():
             reg_total,reg_weight,reg_route,reg_size,reg_value,reg_d_method = dfs_creation(filt_df)
         with col3:
             st.markdown('#### Uploaded file info')
-            if subm_data is not None:
+            if subm_df is not None:
                 st.write(f"Total submission is: {subm_df['Waybill No.'].nunique()}")
                 st.write(f"Shein count excluding Reverse: {filt_df['Waybill No.'].nunique()}")
     st.markdown('---')
 
     with st.container():
-        # st.markdown("### Download Data")
-        output = data_download(reg_total,reg_weight,reg_route,reg_size,reg_value,reg_d_method)
-        st.download_button(
-                            label="Download Output file",
-                            data=output,
-                            file_name="shein_output.xlsx",
-                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                        )
+        if subm_df is not None:
+            # st.markdown("### Download Data")
+            output = data_download(reg_total,reg_weight,reg_route,reg_size,reg_value,reg_d_method)
+            st.download_button(
+                                label="Download Output file",
+                                data=output,
+                                file_name="shein_output.xlsx",
+                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            )
     st.markdown('---')
 
     with st.container():
@@ -151,4 +152,5 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
