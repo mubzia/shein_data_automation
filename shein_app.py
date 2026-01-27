@@ -11,7 +11,7 @@ def subm_upload(subm_data):
         subm_df = pd.read_excel(subm_data,
                                 usecols=['Waybill No.', 'Order Type', 'Client Weight','Delivery Station',
                                          'PPD/COD','COD','Client Volume(cm³)','Create Operator',],
-                                         dtype= str)
+                                         dtype= {'Waybill No.': 'str'})
         subm_df = subm_df.merge(region, on= 'Delivery Station', how='left')
         
         return subm_df
@@ -152,6 +152,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
