@@ -11,7 +11,7 @@ def subm_upload(subm_data):
         subm_df = pd.read_excel(subm_data,
                                 usecols=['Waybill No.', 'Order Type', 'Client Weight','Delivery Station',
                                          'PPD/COD','COD','Client Volume(cm³)','Create Operator',],
-                                         dtype= {'Waybill No.': 'str'})
+                                         dtype={'Waybill No.': str})
         subm_df = subm_df.merge(region, on= 'Delivery Station', how='left')
         
         return subm_df
@@ -20,8 +20,9 @@ def subm_upload(subm_data):
 def add_cols(subm_df):
     if subm_df is not None:
         # filter shein only (excluding Reverse)
-        filt_df = subm_df[(subm_df['Create Operator'].str.contains('shein',case=False,na=False)) &
-                   (subm_df['Order Type']!='Reverse Pickup(Return & Refund)')]
+        filt_df = subm_df.copy()
+        filt_df = filt_df[(filt_df['Create Operator'].str.contains('shein',case=False,na=False)) &
+                   (filt_df['Order Type']!='Reverse Pickup(Return & Refund)')]
         # Route column
         filt_df['Order Route'] = np.where(filt_df['Create Operator'].str.contains('road', case=False, na=False),
                                                                                     'By Road', 'By Air')
@@ -96,27 +97,34 @@ def main():
         st.markdown("### Shein Data Automation")
         col1, col2, col3 = st.columns([2,0.25,2])
         with col1:
-            subm_data = st.file_uploader("Upload the Submission File", type="xlsx", key="submission")
+            subm_data = st.file_uploader("Upload Submission File", type="xlsx", key="submission")
             subm_df = subm_upload(subm_data)
             filt_df = add_cols(subm_df)
             reg_total,reg_weight,reg_route,reg_size,reg_value,reg_d_method = dfs_creation(filt_df)
         with col3:
             st.markdown('#### Uploaded file info')
-            if subm_df is not None:
+            if subm_data is not None:
                 st.write(f"Total submission is: {subm_df['Waybill No.'].nunique()}")
                 st.write(f"Shein count excluding Reverse: {filt_df['Waybill No.'].nunique()}")
     st.markdown('---')
 
     with st.container():
-        if subm_df is not None:
-            # st.markdown("### Download Data")
-            output = data_download(reg_total,reg_weight,reg_route,reg_size,reg_value,reg_d_method)
-            st.download_button(
-                                label="Download Output file",
-                                data=output,
-                                file_name="shein_output.xlsx",
-                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        col1, col2, col3 = st.columns([1,0.5,1])
+        if filt_df is not None:
+            with col1:
+                # st.markdown("### Download Data")
+                output = data_download(reg_total,reg_weight,reg_route,reg_size,reg_value,reg_d_method)
+                st.download_button(
+                            label="Download Output file",
+                            data=output,
+                            file_name="shein_output.xlsx",
+                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             )
+            with col3:
+                new_station = filt_df.loc[filt_df['Region'].isna(), 'Delivery Station'].unique().tolist()
+                if len(new_station)>0:
+                    st.warning('New Stations need Region mapping:')
+                    st.write(new_station)
             st.markdown('---')
 
     with st.container():
@@ -150,10 +158,4 @@ def main():
     # st.dataframe()
 
 if __name__ == "__main__":
-
     main()
-
-
-
-
-
