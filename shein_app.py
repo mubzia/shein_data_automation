@@ -95,7 +95,7 @@ def main():
     
     with st.container(): 
         st.markdown("### Shein Data Automation")
-        col1, col2, col3 = st.columns([2,0.25,2])
+        col1, col2, col3 = st.columns([2,1,2])
         with col1:
             subm_data = st.file_uploader("Upload Submission File", type="xlsx", key="submission")
             subm_df = subm_upload(subm_data)
@@ -158,4 +158,5 @@ def main():
     # st.dataframe()
 
 if __name__ == "__main__":
+
     main()
